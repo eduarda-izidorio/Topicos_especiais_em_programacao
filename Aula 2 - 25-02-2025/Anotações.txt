@@ -1,0 +1,6 @@
+- Realizada instalação do Python
+- Realizada instalação do VSCode
+- Instalação ambiente python
+- Instalação OpenAI
+- Teste utilizando api da OpenAI
+- Apresentação de outros modelos de IA generativa
