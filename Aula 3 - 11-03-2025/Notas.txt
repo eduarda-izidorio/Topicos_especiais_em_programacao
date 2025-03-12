@@ -1,0 +1,6 @@
+- Instalação Groq no ambiente(pip install groq)
+- Colocar chave de api no .venv (CMD) onde tem o arquivo (set GROQ_API_KEY=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)
+- Pegar código da página "text"
+- Teste de textos com prompts e modelos diferentes
+- Aplicação de transcrição de áudios
+- Desafio de transcrição de áudio com interface 
