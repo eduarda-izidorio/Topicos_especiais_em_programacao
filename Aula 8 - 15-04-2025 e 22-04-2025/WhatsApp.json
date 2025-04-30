@@ -1,0 +1,483 @@
+{
+  "name": "WhatsApp",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "aula",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        -140,
+        0
+      ],
+      "id": "cd733a87-2178-4fc8-983c-edac240d7c8a",
+      "name": "Webhook",
+      "webhookId": "9dc8aa82-fa8e-497c-b06b-a1c1db381d9a"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "51ec0ed8-21b1-41a6-b843-e722731d5cb9",
+              "name": "messageType",
+              "value": "={{ $json.body.data.messageType }}",
+              "type": "string"
+            },
+            {
+              "id": "7094c953-aed0-47b9-8b40-1ec06d8b995b",
+              "name": "mensagem",
+              "value": "={{ $json.body.data.message.conversation }}",
+              "type": "string"
+            },
+            {
+              "id": "299448d7-9b78-4be6-ac64-49164e270193",
+              "name": "remoteJid",
+              "value": "={{ $json.body.data.key.remoteJid }}",
+              "type": "string"
+            },
+            {
+              "id": "36ed751d-586c-4637-84c0-ce301b793f3c",
+              "name": "groupId",
+              "value": "={{ $json.body.data.message.senderKeyDistributionMessage.groupId }}",
+              "type": "string"
+            },
+            {
+              "id": "d8888936-f4f8-44a3-b02a-ecacf85266d2",
+              "name": "participant",
+              "value": "={{ $json.body.data.key.participant }}",
+              "type": "string"
+            },
+            {
+              "id": "0aee97ec-96d4-4826-80c6-cc6fe67f4cc7",
+              "name": "fromMe",
+              "value": "={{ $json.body.data.key.fromMe }}",
+              "type": "boolean"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        220,
+        0
+      ],
+      "id": "428730c3-c2c4-48ad-902a-b27b19c1fe9a",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "f6327d87-fe32-4e6f-b0fe-7d414fed9885",
+              "leftValue": "={{ $json.groupId }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "notExists",
+                "singleValue": true
+              }
+            },
+            {
+              "id": "9d80f826-6991-4456-9510-c451eac98623",
+              "leftValue": "={{ $json.participant }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "notExists",
+                "singleValue": true
+              }
+            },
+            {
+              "id": "7b873170-88b7-4913-b3e7-23d5d69faacf",
+              "leftValue": "={{ $json.fromMe }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "false",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        440,
+        0
+      ],
+      "id": "32628d42-1253-43ee-97dd-972f9449bec6",
+      "name": "If"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        600,
+        120
+      ],
+      "id": "01830b17-20f5-48fc-b01e-1e11e4153b5e",
+      "name": "No Operation, do nothing"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.messageType }}",
+                    "rightValue": "conversation",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "e10b3422-a04f-4b75-b432-eecfbff1ca8e"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "messageText"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "c92b9983-1cf1-4484-8da7-eaeba9d6bc35",
+                    "leftValue": "={{ $json.messageType }}",
+                    "rightValue": "imageMessage",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "imageMessage"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "34557909-ca72-41ea-88d3-e67a4e12b976",
+                    "leftValue": "={{ $json.messageType }}",
+                    "rightValue": "audioMessage",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "audioMessage"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [
+        660,
+        -100
+      ],
+      "id": "3481689a-eb05-4f46-9f60-381f5540dfc8",
+      "name": "Switch"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.mensagem }}",
+        "options": {
+          "systemMessage": "Você é o assistente pessoal do Miau, um gato doméstico extremamente inteligente. Sua função é responder mensagens com cordialidade, mantendo o foco exclusivo em assuntos felinos.\n\nDiretrizes do Atendimento:\n1 - Identificação do Interesse: Inicie cada interação identificando claramente o objetivo ou interesse principal da conversa.\n\n2 - Foco no Tema: Conduza e mantenha a conversa estritamente relacionada a temas felinos (comportamento, saúde, alimentação, curiosidades sobre gatos, etc.).\n\n3 - Encerramento Cordial: Finalize cada atendimento com uma despedida gentil e apropriada ao contexto.\n\n\nRegras Obrigatórias:\n1- Sempre utilize a ferramenta Tool Think para refletir antes de formular qualquer resposta.\n2 - Nunca responda a perguntas ou comentários fora do contexto felino."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.8,
+      "position": [
+        1060,
+        -440
+      ],
+      "id": "6f2f8a09-dba8-4836-8063-fd9d004a4e4a",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGroq",
+      "typeVersion": 1,
+      "position": [
+        1020,
+        -260
+      ],
+      "id": "ae1222fe-1f24-4e54-9aaf-9fc43b4975cb",
+      "name": "Groq Chat Model",
+      "credentials": {
+        "groqApi": {
+          "id": "V7bCXAqbGLDp2upZ",
+          "name": "Groq account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "={{ $json.remoteJid }}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        1160,
+        -200
+      ],
+      "id": "22fea0c6-594b-4011-9e0a-d8a088b3498c",
+      "name": "Simple Memory"
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "={{ $json.remoteJid }}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryRedisChat",
+      "typeVersion": 1.5,
+      "position": [
+        1280,
+        -200
+      ],
+      "id": "251e50ea-1831-4359-9d96-28092849ef3d",
+      "name": "Redis Chat Memory",
+      "credentials": {
+        "redis": {
+          "id": "Z8ac0TxnsbKAPgOh",
+          "name": "Redis account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "chat-api",
+        "operation": "send-presence",
+        "instanceName": "aulaWhatsappN8n",
+        "remoteJid": "={{ $('Switch').item.json.remoteJid }}",
+        "delay": 500
+      },
+      "type": "n8n-nodes-evolution-api.evolutionApi",
+      "typeVersion": 1,
+      "position": [
+        1460,
+        -540
+      ],
+      "id": "20f4c09a-cf0e-48c1-b454-bc02dcc0c125",
+      "name": "Evolution API",
+      "credentials": {
+        "evolutionApi": {
+          "id": "4xz4j6JHHu0U9VvD",
+          "name": "Evolution account"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        1680,
+        -540
+      ],
+      "id": "4cc6d876-57fd-4a38-bc4f-d1e946949698",
+      "name": "Wait",
+      "webhookId": "669f753a-4abe-438d-b474-0855328b9d49"
+    },
+    {
+      "parameters": {
+        "resource": "messages-api",
+        "instanceName": "aulaWhatsappN8n",
+        "remoteJid": "={{ $('Switch').item.json.remoteJid }}",
+        "messageText": "={{ $('AI Agent').item.json.output }}",
+        "options_message": {}
+      },
+      "type": "n8n-nodes-evolution-api.evolutionApi",
+      "typeVersion": 1,
+      "position": [
+        1900,
+        -540
+      ],
+      "id": "d8e04111-48ff-4e4c-a8ad-c910dd2fe1b8",
+      "name": "Evolution API1",
+      "credentials": {
+        "evolutionApi": {
+          "id": "4xz4j6JHHu0U9VvD",
+          "name": "Evolution account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Switch",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "No Operation, do nothing",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Groq Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simple Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Redis Chat Memory": {
+      "ai_memory": [
+        []
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Evolution API",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Evolution API": {
+      "main": [
+        [
+          {
+            "node": "Wait",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait": {
+      "main": [
+        [
+          {
+            "node": "Evolution API1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "1314af63-3abe-42cb-ab58-3c95de1b3c89",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "3d2241a931a41caca7ba8f38cf7f8543bef4654d8031ea7e7f027085ba9a77a6"
+  },
+  "id": "Rz35WpsYGjdeok9B",
+  "tags": []
+}

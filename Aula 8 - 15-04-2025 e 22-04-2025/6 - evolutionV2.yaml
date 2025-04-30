@@ -2,14 +2,14 @@ version: "3.7"
 
 services:
   evolution_v2:  
-    image: atendai/evolution-api:v2.2.1 ## Versão da Evolution API
+    image: atendai/evolution-api:v2.2.3 ## Versão da Evolution API
     volumes:
       - evolution_instancesv2:/evolution/instances
     networks:
       - network_public
     environment:
     ## Url da Evolution API
-    - SERVER_URL=https://api.bentektecnologia.com.br
+    - SERVER_URL=https://api.carla.autom.my
     ## Dados de Autenticação
     - AUTHENTICATION_TYPE=apikey
     - AUTHENTICATION_API_KEY=1b13b2f0f532b81a874c825c7d2e06f7 ## GLOBAL API KEY
@@ -20,7 +20,7 @@ services:
     - CONFIG_SESSION_PHONE_NAME=chrome    
     ## Definir versão do Whatsapp Web
     ## pegue a versão em: https://web.whatsapp.com/check-update?version=0&platform=web
-    - CONFIG_SESSION_PHONE_VERSION=2.3000.1015901307
+    - CONFIG_SESSION_PHONE_VERSION=2.3000.1022128419
     ## Configurações do Whatsapp Business Cloud (Api Oficial)
     - WA_BUSINESS_TOKEN_WEBHOOK=evolution
     - WA_BUSINESS_URL=https://graph.facebook.com
@@ -32,7 +32,7 @@ services:
     ## Aivar Banco de Dados Postgres
     - DATABASE_ENABLED=true
     - DATABASE_PROVIDER=postgresql
-    - DATABASE_CONNECTION_URI=postgresql://postgres:xa.DcVuC@nyJ5nE@postgres:5432/evolution
+    - DATABASE_CONNECTION_URI=postgresql://postgres:uperWym202x2@postgres:5432/evolution
     - DATABASE_CONNECTION_CLIENT_NAME=evolution
     - DATABASE_SAVE_DATA_INSTANCE=true
     - DATABASE_SAVE_DATA_NEW_MESSAGE=true
@@ -67,7 +67,7 @@ services:
     - CHATWOOT_ENABLED=true
     - CHATWOOT_MESSAGE_READ=true
     - CHATWOOT_MESSAGE_DELETE=true
-    - CHATWOOT_IMPORT_DATABASE_CONNECTION_URI=postgresql://postgres:xa.DcVuC@nyJ5nE@postgres:5432/chatwoot?sslmode=disable
+    - CHATWOOT_IMPORT_DATABASE_CONNECTION_URI=postgresql://postgres:uperWym202x2@postgres:5432/chatwoot?sslmode=disable
     - CHATWOOT_IMPORT_PLACEHOLDER_MEDIA_MESSAGE=false ## true = Importar midia | false = Não importar midia
     ## Dados do RabbitMQ
     - RABBITMQ_ENABLED=false
@@ -139,7 +139,7 @@ services:
         - node.role == manager
       labels:
       - traefik.enable=1
-      - traefik.http.routers.evolution_v2.rule=Host(`api.bentektecnologia.com.br`) ## Url da aplicação
+      - traefik.http.routers.evolution_v2.rule=Host(`api.carla.autom.my`) ## Url da aplicação
       - traefik.http.routers.evolution_v2.entrypoints=websecure
       - traefik.http.routers.evolution_v2.priority=1
       - traefik.http.routers.evolution_v2.tls.certresolver=letsencryptresolver
