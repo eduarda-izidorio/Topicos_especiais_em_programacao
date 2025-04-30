@@ -29,3 +29,15 @@
 - Gerar arquivos do **n8n**.
   - Após editar com a URL gerada do `auto.my`, criar a conta no n8n.
   - Acesse: [`https://auto.carla.autom.my`](https://auto.carla.autom.my)
+
+
+**22/04/2025**
+- Importar a stack do Evolution
+- Acessar [`https://api.carla.autom.my/manager`](https://api.carla.autom.my/manager)
+- Conectar WhatsApp Web
+- Gerar webhook com POST
+- Início implementação de webhook de chatBot
+
+**29/04/2025**
+- Finalização da implementação do webhook do chatBoot
+- Gerado Json que contém a implementação dos componentes do webhook
