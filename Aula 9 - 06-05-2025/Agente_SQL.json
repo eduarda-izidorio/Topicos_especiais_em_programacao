@@ -1,0 +1,202 @@
+{
+  "name": "Agente SQL",
+  "nodes": [
+    {
+      "parameters": {
+        "options": {
+          "systemMessage": "=Você é um analista inteligente que interpreta dados de um grande banco de restaurantes e bares registrados no Brasil.\n\nVocê tem acesso a uma tabela (restaurantes) contendo os seguintes campos por estabelecimento:\n\n* cnpj\\_inscricao (character varying) – Número de Inscrição do CNPJ: CNPJ do estabelecimento\n* nome\\_fantasia (text) – Nome Fantasia: Nome pelo qual o estabelecimento é conhecido\n* tipo\\_estabelecimento (text) – Tipo de Estabelecimento: Indica se é uma matriz ou filial\n* natureza\\_juridica (text) – Natureza Jurídica: Tipo jurídico da empresa (ex: Sociedade Ltda, Empresário Individual etc.)\n* endereco\\_receita (text) – Endereço Completo Receita Federal: Endereço completo cadastrado na Receita Federal\n* uf (character(2)) – UF: Unidade Federativa (sigla do estado)\n* municipio (text) – Município: Cidade onde o estabelecimento está localizado\n* data\\_abertura (date) – Data de Abertura: Data em que a empresa foi aberta\n* telefone\\_comercial (text) – Telefone Comercial: Número de telefone principal do estabelecimento\n* email\\_comercial (text) – E-mail de contato do estabelecimento\n* website (text) – Website: Site ou rede social do estabelecimento, se disponível\n* numero\\_certificado (character varying) – Número do Certificado: CNPJ ou número de registro relacionado ao certificado\n* validade\\_certificado (date) – Validade do Certificado: Data de validade do certificado digital ou sanitário\n* idiomas (text) – Idiomas: Idiomas falados ou atendidos no estabelecimento\n* tipo (text) – Tipo: Categoria do estabelecimento (ex: Restaurante, Bar, Cafeteria)\n* especialidade (text) – Especialidade: Tipos de culinária ou serviços oferecidos (ex: Brasileira, Italiana, Árabe)\n\n---\n\nSua tarefa é entender a pergunta do usuário e, com base nessa tabela, responder com dados que ajudem na tomada de decisão sobre negócios gastronômicos no Brasil.\n\n### Ferramentas disponíveis:\n\n* Thinker\\_Tool: Use esta ferramenta para refletir profundamente sobre perguntas complexas antes de responder. Ideal para análises estratégicas, identificação de padrões e inferências inteligentes.\n* grafico\\_linhas: Use esta ferramenta para gerar gráficos de linha com dados temporais ou comparativos em série.\n---\n\nReflita estrategicamente sobre questões como:\n\n* Concentração de estabelecimentos por cidade ou estado;\n* Diversidade de especialidades por região;\n* Lacunas de mercado (tipos ou especialidades pouco exploradas);\n* Idade média dos estabelecimentos por cidade (para avaliar maturidade de mercado);\n* Idiomas atendidos que possam indicar o perfil do público;\n* Tipos predominantes de negócios (restaurante, bar, cafeteria) por localidade.\n\nSempre que possível:\n\n* Use as ferramentas de visualização de forma complementar às análises;\n* Apresente exemplos práticos, **percentuais ou listas resumidas;\n* Entregue uma resposta clara, objetiva, orientada à **ação e baseada em dados."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.8,
+      "position": [
+        220,
+        0
+      ],
+      "id": "68cd8efb-11ca-42e4-9b42-696422320126",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "model": "llama-3.3-70b-versatile",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGroq",
+      "typeVersion": 1,
+      "position": [
+        100,
+        220
+      ],
+      "id": "229bb176-b9eb-4725-99ad-1d6e79cdfdbe",
+      "name": "Groq Chat Model",
+      "credentials": {
+        "groqApi": {
+          "id": "V7bCXAqbGLDp2upZ",
+          "name": "Groq account"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        240,
+        240
+      ],
+      "id": "d147f7bf-6dcb-46de-a3da-fee118fb8478",
+      "name": "Simple Memory"
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "{{ $fromAI(\"query\") }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgresTool",
+      "typeVersion": 2.6,
+      "position": [
+        700,
+        280
+      ],
+      "id": "0a4b4a75-b72b-488b-8d86-6e3ad6998e97",
+      "name": "Postgres",
+      "credentials": {
+        "postgres": {
+          "id": "s8nluJLpjyien0BS",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "toolDescription": "Use esta ferramenta para criar gráficos de linhas com base nos dados fornecidos.",
+        "chartType": "line",
+        "data": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Data', ``, 'json') }}",
+        "output": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Put_Output_In_Field', ``, 'string') }}",
+        "chartOptions": {},
+        "datasetOptions": {
+          "backgroundColor": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Background_Color', ``, 'string') }}",
+          "borderColor": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Border_Color', ``, 'string') }}",
+          "fill": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Fill', ``, 'boolean') }}",
+          "label": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Label', ``, 'string') }}"
+        }
+      },
+      "type": "n8n-nodes-base.quickChartTool",
+      "typeVersion": 1,
+      "position": [
+        820,
+        240
+      ],
+      "id": "e2ef7c8c-c3f4-47e9-9d94-76b58312c07f",
+      "name": "grafico_linhas"
+    },
+    {
+      "parameters": {
+        "description": "Use esta ferramenta para refletir profundamente sobre uma pergunta ou problema. Ela não acessa novas informações nem altera o banco de dados, mas registra o raciocínio realizado para referência futura. Ideal para análises complexas, inferências contextuais ou quando é necessário manter uma \"memória\" de pensamento para fundamentar respostas mais inteligentes e estratégicas."
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolThink",
+      "typeVersion": 1,
+      "position": [
+        580,
+        280
+      ],
+      "id": "5f39a18f-9d93-4164-b260-5055035fccd1",
+      "name": "Think"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "6e801c6a-9508-4fe4-809c-189029f38636",
+      "name": "ChatMensagens",
+      "webhookId": "e461ed50-0e99-442e-88c1-d13d32879c33"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Groq Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simple Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Postgres": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "grafico_linhas": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Think": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "ChatMensagens": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "99089cbc-27b1-4583-9d46-140acd2b56c4",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "3d2241a931a41caca7ba8f38cf7f8543bef4654d8031ea7e7f027085ba9a77a6"
+  },
+  "id": "eW9W1pfexfhHXHdY",
+  "tags": []
+}
