@@ -39,5 +39,11 @@
 - Início implementação de webhook de chatBot
 
 **29/04/2025**
-- Finalização da implementação do webhook do chatBoot
+- Finalização da implementação do webhook do chatBoot utilizando respostas a mensagens de texto
 - Gerado Json que contém a implementação dos componentes do webhook
+
+**06/05/199**
+- Implemntação de webhooks para transcrição de áudios
+- Implementação de webhooks para leitura de imagens
+- Conversão de arquivos em texto utilizando o Groq
+- Finalização da implementação da comunicação com WhatsApp
